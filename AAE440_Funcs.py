@@ -284,4 +284,15 @@ def KDE_MRP(MRP, omega):
     MRP_dot = 1/4*np.dot(MRP_mat, omega)
     return MRP_dot
 
+def dwdt_torqueFree(omega, I):
+    """
+    Compute the derivative of the angular velocity
+    given the angular velocity and the inertia matrix
+    """
+    omega_dot = np.zeros(3)
+    omega_dot[0] = -(I[2]-I[1])/I[0]*omega[1]*omega[2]
+    omega_dot[1] = -(I[0]-I[2])/I[1]*omega[2]*omega[0]
+    omega_dot[2] = -(I[1]-I[0])/I[2]*omega[0]*omega[1]
+    return omega_dot
+
 
