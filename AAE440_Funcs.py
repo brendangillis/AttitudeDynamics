@@ -244,3 +244,44 @@ def KDE_EA313(EA, omega):
 
     EA_dot = 1/np.sin(EA[1]) * np.dot(EA_mat, omega)
     return EA_dot
+
+def KDE_CRP(CRP, omega):
+    """
+    Compute the CRP derivative given CRP
+    and angular velocity
+    """
+    CRP_mat          = np.zeros((3,3))
+    CRP_mat[0, 0]    = 1+CRP[0]**2
+    CRP_mat[0, 1]    = CRP[0]*CRP[1]-CRP[2]
+    CRP_mat[0, 2]    = CRP[0]*CRP[2]+CRP[1]
+    CRP_mat[1, 0]    = CRP[1]*CRP[0]+CRP[2]
+    CRP_mat[1, 1]    = 1+CRP[1]**2
+    CRP_mat[1, 2]    = CRP[1]*CRP[2]-CRP[0]
+    CRP_mat[2, 0]    = CRP[2]*CRP[0]-CRP[1]
+    CRP_mat[2, 1]    = CRP[2]*CRP[1]+CRP[0]
+    CRP_mat[2, 2]    = 1+CRP[2]**2
+    
+    CRP_dot = 1/2*np.dot(CRP_mat, omega)
+    return CRP_dot
+
+def KDE_MRP(MRP, omega):
+    """
+    Compute the MRP derivative given CRP
+    and angular velocity
+    """
+    mrpL2 = np.linalg.norm(MRP)
+    MRP_mat          = np.zeros((3,3))
+    MRP_mat[0, 0]    = 1-mrpL2**2+2*MRP[0]**2
+    MRP_mat[0, 1]    = 2*(MRP[0]*MRP[1]-MRP[2])
+    MRP_mat[0, 2]    = 2*(MRP[0]*MRP[2]+MRP[1])
+    MRP_mat[1, 0]    = 2*(MRP[1]*MRP[0]+MRP[2])
+    MRP_mat[1, 1]    = 1-mrpL2**2+2*MRP[1]**2
+    MRP_mat[1, 2]    = 2*(MRP[1]*MRP[2]-MRP[0])
+    MRP_mat[2, 0]    = 2*(MRP[2]*MRP[0]-MRP[1])
+    MRP_mat[2, 1]    = 2*(MRP[2]*MRP[1]+MRP[0])
+    MRP_mat[2, 2]    = 1-mrpL2**2+2*MRP[2]**2
+    
+    MRP_dot = 1/4*np.dot(MRP_mat, omega)
+    return MRP_dot
+
+
