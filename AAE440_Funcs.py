@@ -295,4 +295,22 @@ def dwdt_torqueFree(omega, I):
     omega_dot[2] = -(I[1]-I[0])/I[2]*omega[0]*omega[1]
     return omega_dot
 
+def dwdt_gravTorque(omega, I, Omega, R):
+    """
+    Compute the derivative of the angular velocity
+    given the angular velocity and the inertia matrix
+    Include the torque from gravity gradient
+    """
+    K1 = (I[1]-I[2])/I[0]
+    K2 = (I[2]-I[0])/I[1]
+    K3 = (I[0]-I[1])/I[2]
+
+    B = 3*Omega**2/LA.norm(R)**2
+    omega_dot = np.zeros(3)
+    omega_dot[0] = K1*omega[1]*omega[2]-B*K1*R[2]*R[1]
+    omega_dot[1] = K2*omega[2]*omega[0]-B*K2*R[0]*R[2]
+    omega_dot[2] = K3*omega[0]*omega[1]-B*K3*R[1]*R[0]
+    return omega_dot
+
+
 
